@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCU SE Chapter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS for colors and font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        :root {
+            --primary-color: rgb(170, 49, 86);
+            --secondary-color: rgb(47, 93, 160);
+            --text-color: rgb(255, 255, 255);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Darker background */
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 90%;
+        }
+        .card {
+            background: rgba(22, 27, 34, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .glow-text {
+            text-shadow: 0 0 8px var(--primary-color), 0 0 15px var(--primary-color);
+        }
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--secondary-color);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+        input, select {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: var(--text-color);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+        input[type="radio"] {
+            appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 2px solid var(--secondary-color);
+            transition: all 0.2s;
+        }
+        input[type="radio"]:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        input[type="radio"]:checked:after {
+            content: '';
+            display: block;
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section with Game and Form -->
+    <section class="min-h-screen flex items-center justify-center p-4">
+        <div class="card container mx-auto max-w-5xl rounded-lg shadow-2xl overflow-hidden md:flex">
+            <!-- Left Half (Description & Game) -->
+            <div class="md:w-1/2 p-8 flex flex-col justify-center items-center text-center bg-gray-900">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4 glow-text">
+                    DATA SCIENCE STICKER CUTTING GAME
+                </h1>
+                <p class="text-lg mb-6 max-w-sm text-gray-400">
+                    Test your speed and precision. Cut the sticker outlines as fast as you can to record your time.
+                </p>
+                <div class="w-full max-w-xs rounded-lg overflow-hidden shadow-lg">
+                    <!-- Placeholder for the game -->
+                    <div id="gameContainer" class="bg-gray-800 p-8 rounded-lg">
+                        <p class="text-xl mb-4">Squid Game</p>
+                        <p id="timerDisplay" class="text-4xl font-mono mb-4 text-green-400">00:00.00</p>
+                        <div class="flex flex-col gap-4">
+                            <button id="startButton" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-md transition-all duration-200 glow-button" disabled>
+                                Start Game
+                            </button>
+                            <button id="stopButton" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-md transition-all duration-200 glow-button hidden">
+                                Stop Game
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Half (Form) -->
+            <div class="md:w-1/2 p-8 bg-primary flex flex-col justify-center">
+                <form id="gameForm" class="space-y-4">
+                    <fieldset class="mb-4 text-center">
+                        <h2 class="text-3xl font-bold text-center mb-1">
+                            Record Your Score
+                        </h2>
+                    </fieldset>
+
+                    <!-- Field: Name -->
+                    <fieldset>
+                        <legend class="block text-sm font-medium mb-1">Name</legend>
+                        <div class="form-group">
+                            <input id="nameInput" type="text" name="entry.1524444167" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field: Level -->
+                    <fieldset>
+                        <legend class="block text-sm font-medium mb-1">Level</legend>
+                        <div class="form-group space-y-2" id="levelContainer">
+                            <label>
+                                <input type="radio" name="entry.128607888" value="Easy" required>
+                                Easy
+                            </label>
+                            <label>
+                                <input type="radio" name="entry.128607888" value="Medium" required>
+                                Medium
+                            </label>
+                            <label>
+                                <input type="radio" name="entry.128607888" value="Hard" required>
+                                Hard
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field: Time -->
+                    <fieldset>
+                        <legend class="block text-sm font-medium mb-1">Time</legend>
+                        <div class="form-group">
+                            <input id="timeInput" type="text" name="entry.789121930" class="w-full px-4 py-2 rounded-md transition-all duration-200" required readonly>
+                        </div>
+                    </fieldset>
+
+                    <!-- Hidden fields required for Google Forms -->
+                    <input type="hidden" name="fvv" value="1">
+                    <input type="hidden" name="fbzx" value="6419222154304233445">
+                    <input type="hidden" name="pageHistory" value="0">
+
+                    <button id="submitButton" type="submit" class="w-full bg-gray-900 text-white font-bold py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none glow-button" disabled>
+                        Submit Score
+                    </button>
+                </form>
+
+                <!-- Confirmation message -->
+                <div id="confirmationMessage" class="hidden mt-4 p-4 text-center rounded-md bg-green-500 text-white">
+                    Score submitted successfully!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfaVYJHcIPjO6K9cM-7Ipdx90s4-aC7b6GrpohoHg5GpoIWJg/formResponse";
+        const form = document.getElementById('gameForm');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const submitButton = document.getElementById('submitButton');
+        const nameInput = document.getElementById('nameInput');
+        const levelContainer = document.getElementById('levelContainer');
+        const timeInput = document.getElementById('timeInput');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+
+        let startTime;
+        let timerInterval;
+        let isRunning = false;
+
+        // Function to check if name and level are selected
+        function checkFormValidity() {
+            const nameFilled = nameInput.value.trim() !== '';
+            const levelSelected = document.querySelector('input[name="entry.128607888"]:checked') !== null;
+            startButton.disabled = !(nameFilled && levelSelected);
+        }
+
+        function formatTime(ms) {
+            const minutes = Math.floor(ms / 60000);
+            const seconds = Math.floor((ms % 60000) / 1000);
+            const milliseconds = Math.floor(ms % 1000 / 10);
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsedTime = Date.now() - startTime;
+                timerDisplay.textContent = formatTime(elapsedTime);
+            }, 10);
+        }
+
+        function stopTimer() {
+            if (!isRunning) return;
+            isRunning = false;
+            clearInterval(timerInterval);
+            
+            // Calculate and set the final time
+            const elapsedTime = Date.now() - startTime;
+            timeInput.value = formatTime(elapsedTime);
+        }
+
+        // Listen for changes in name and level to enable the start button
+        nameInput.addEventListener('input', checkFormValidity);
+        levelContainer.addEventListener('change', checkFormValidity);
+
+        // Start button listener
+        startButton.addEventListener('click', () => {
+            startTimer();
+            startButton.disabled = true;
+            stopButton.classList.remove('hidden');
+            submitButton.disabled = true;
+            confirmationMessage.classList.add('hidden');
+        });
+
+        // Stop button listener
+        stopButton.addEventListener('click', () => {
+            stopTimer();
+            stopButton.classList.add('hidden');
+            submitButton.disabled = false;
+        });
+
+        // Form submission listener
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // The time is already filled from the stopTimer function
+            const formData = new FormData(form);
+            const urlEncodedData = new URLSearchParams(formData).toString();
+
+            fetch(`${formUrl}?${urlEncodedData}`, {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                confirmationMessage.classList.remove('hidden');
+                form.reset();
+                timerDisplay.textContent = "00:00.00";
+                stopButton.classList.add('hidden');
+                submitButton.disabled = true;
+                startButton.disabled = true;
+                
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    confirmationMessage.classList.add('hidden');
+                }, 3000);
+
+            }).catch(error => {
+                console.error('Submission failed:', error);
+                const failureMessage = document.createElement('div');
+                failureMessage.textContent = 'An error occurred. Please try again.';
+                failureMessage.className = 'mt-4 p-4 text-center rounded-md bg-red-500 text-white';
+                form.parentNode.insertBefore(failureMessage, form.nextSibling);
+
+                setTimeout(() => {
+                    failureMessage.remove();
+                }, 3000);
+            });
+        });
+
+        // Initial check on page load
+        checkFormValidity();
+    </script>
+</body>
+</html>
